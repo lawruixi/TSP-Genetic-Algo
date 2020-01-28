@@ -65,6 +65,11 @@ def fitness(route):
     return 1 / total_distance;
 
 def best_route(population):
+    """
+    Finds the best route given a population by comparing the fitness value.
+
+    :param population (int, int)[][]: array describing population.
+    """
     best_fitness = -1;
     best_route = None;
     for i in population:
@@ -145,58 +150,17 @@ def selection(population, routes_dict):
     grp2 = shuffle1[len(shuffle1)//2:];
     parent2 = best_route(grp2);
 
+    print_text("Chosen parent1: ", end='');
     print_text(parent1, end='');
     print_text(", fitness = " + str(fitness(parent1)))
-    # print_text("Chosen parent 1: ");
-    # print_text(parent1);
 
+    print_text("Chosen parent2: ", end='');
     print_text(parent2, end='');
     print_text(", fitness = " + str(fitness(parent2)))
-    # print_text("Chosen parent 2: ");
-    # print_text(parent2);
 
     print_text("\n");
 
     return (parent1, parent2);
-
-    # total_weight = sum(routes_dict.values());
-    #total_weight = sum(map(lambda x: x**4, routes_dict.values()))
-    #random_number_1 = (random.random() * (total_weight));
-    #random_number_2 = (random.random() * (total_weight));
-
-    #print_text("Weight: " + str(total_weight));
-    #print_text("Random Number 1: " + str(random_number_1));
-    #print_text("Random Number 2: " + str(random_number_2));
-    ##TODO?
-    #random_number_1 **= 4
-    #random_number_2 **= 4
-
-    #parent1 = None;
-    #parent2 = None;
-
-    #for index, weight in routes_dict.items():
-    #    random_number_1 -= weight ** 4;
-    #    random_number_2 -= weight ** 4;
-    #    if(random_number_1 <= 0 and parent1 is None): #Chosen
-    #        parent1 = population[index];
-
-    #    if(random_number_2 <= 0 and parent2 is None):
-    #        parent2 = population[index];
-
-    #print_text(parent1, end='');
-    #print_text(", fitness = " + str(fitness(parent1)))
-    ## print_text("Chosen parent 1: ");
-    ## print_text(parent1);
-
-    #print_text(parent2, end='');
-    #print_text(", fitness = " + str(fitness(parent2)))
-    ## print_text("Chosen parent 2: ");
-    ## print_text(parent2);
-
-    #print_text("\n");
-
-    #return (parent1, parent2);
-
 
 def breed(parents):
     """
@@ -307,6 +271,10 @@ def mutate_population(population, mutation_rate):
     return new_population;
 
 def genetic_algorithm():
+    """
+    Putting it all together ;)
+
+    """
     global cityList;
     print_text("City List: ")
     print_text(cityList);
@@ -323,9 +291,6 @@ def genetic_algorithm():
         population = mutate_population(population, MUTATION_RATE);
 
         print_text("Population:")
-        # for i in population:
-        #     print_text(i);
-
         for i in population:
             print_text(i, end='');
             print_text(", fitness = " + str(fitness(i)))
