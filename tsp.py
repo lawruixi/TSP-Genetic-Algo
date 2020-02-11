@@ -13,7 +13,7 @@ MAX_Y = 5
 population = []
 POPULATION_SIZE = 100
 MUTATION_RATE = 0.05
-GENERATIONS = 1000
+GENERATIONS = 250
 
 def print_text(text, sep='', end='\n'):
     if(verbose):
@@ -162,11 +162,11 @@ def selection(population, routes_dict):
     grp2 = shuffle1[len(shuffle1)//2:];
     parent2 = best_route(grp2);
 
-    print_text("Chosen parent1: ", end='');
+    print_text("Chosen parent1: \n", end='');
     print_text(parent1, end='');
     print_text(", fitness = " + str(fitness(parent1)))
 
-    print_text("Chosen parent2: ", end='');
+    print_text("Chosen parent2: \n", end='');
     print_text(parent2, end='');
     print_text(", fitness = " + str(fitness(parent2)))
 
@@ -192,11 +192,55 @@ def breed(parents):
     cut2 = random.randrange(0, len(parent1));
     if(cut1 > cut2): cut1, cut2 = cut2, cut1;
 
-    cut_range = parent1[cut1:cut2]
-    child1 = cut_range + [item for item in parent2 if item not in cut_range];
+    # cut_range = parent1[cut1:cut2]
+    # child1 = cut_range + [item for item in parent2 if item not in cut_range];
 
-    cut_range = parent2[cut1:cut2]
-    child2 = cut_range + [item for item in parent1 if item not in cut_range];
+    # cut_range = parent2[cut1:cut2]
+    # child2 = cut_range + [item for item in parent1 if item not in cut_range];
+    cut_range = parent1[cut1:cut2];
+    print(cut_range)
+    child1 = []
+    index = 0;
+    i = 0;
+    while i < cut1:
+        if(parent2[index] not in cut_range): child1.append(parent2[index]); print(parent2[index]); print(child1); index += 1; i += 1;
+        else: index += 1; continue;
+    while i < cut2:
+        child1.append(parent1[i]); i += 1;
+    while i < len(parent2):
+        if(parent2[index] not in cut_range): child1.append(parent2[index]); print(parent2[index]); print(child2); index += 1; i += 1;
+        else: index += 1; continue;
+
+    print("Child1")
+    print(child1)
+
+
+    cut_range = parent2[cut1:cut2];
+    child2 = []
+    index = 0;
+    i = 0;
+    while i < cut1:
+        if(parent1[index] not in cut_range): child2.append(parent1[index]); index += 1; i += 1;
+        else: index += 1; continue;
+    while i < cut2:
+        child2.append(parent2[i]); i += 1;
+    # child2 += cut_range;
+    # i += cut2 - cut1 + 1;
+    while i < len(parent1):
+        if(parent1[index] not in cut_range): child2.append(parent1[index]); index += 1; i += 1;
+        else: index += 1; continue;
+
+    print("Child2")
+    print(child2)
+
+
+    # cut_range = parent2[cut1:cut2];
+    # child2 = []
+    # for i in range(cut1):
+    #     child2.append(parent1[i]);
+    # child2 += cut_range;
+    # for i in range(cut2, len(parent1)):
+    #     child2.append(parent1[i])
 
     # for count in range(len(parent1)):
     #     if(cut1 <= count and count <= cut2):
@@ -211,8 +255,8 @@ def breed(parents):
     #         child2.append(parent1[count]);
 
     print_text("Breeding completed!")
-    print_text(child1);
-    print_text(child2);
+    print_text("Child 1: \n" + str(child1) + ", fitness = " + str(fitness(child1)));
+    print_text("Child 2: \n" + str(child2) + ", fitness = " + str(fitness(child2)));
 
     print_text("\n");
 
