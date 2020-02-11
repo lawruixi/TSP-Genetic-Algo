@@ -131,6 +131,18 @@ def best_distance(population):
     max_fitness = max([fitness(i) for i in population]);
     return 1/max_fitness;
 
+def average_distance(population):
+    """
+    Returns mean distance across population.
+
+    :param population (int, int)[][]: population list
+    """
+
+    fitness_list = [fitness(i) for i in population];
+    sum_fitness = sum(fitness_list);
+    average_fitness = sum_fitness / len(population);
+    return 1 / average_fitness;
+
 
 def selection(population, routes_dict):
     """
@@ -295,6 +307,7 @@ def genetic_algorithm():
             print_text(i, end='');
             print_text(", fitness = " + str(fitness(i)))
         print_text("Distance: " + str(best_distance(population)))
+        print_text("Average distance: " + str(average_distance(population)))
 
     print_text("Final distance: ", end="");
     print_text(best_distance(population));

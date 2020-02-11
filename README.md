@@ -25,6 +25,7 @@ python3 tsp.py > output.txt
 ## Future Work
 - Improve accuracy of genetic algorithm.
 - Read cities from file instead of randomly generating all the time.
+- Reduce inbreeding xd
 
 ## Contributing
 If you would like to contribute, sure. Pull requests are welcome ;)
