@@ -1,4 +1,5 @@
 import random;
+import datetime;
 
 # Each city is represented by a tuple of (x, y) coordinates.
 # We want to minimize distance, which we will calculate via Pythagorean Theorem.
@@ -144,10 +145,10 @@ def average_distance(population):
     return 1 / average_fitness;
 
 
-def selection(population, routes_dict):
+def selection(population, routes_dict, k):
     """
     Selects parents to "breed" and form a child.
-    Based on a random selection by weight, which is proportional to fitness.
+    Based on tournament style, where the best of k random members are chosen.
     Returns tuple of parent1, parent2.
 
     :param population (int, int)[][]: list of routes that represents the population.
@@ -157,9 +158,12 @@ def selection(population, routes_dict):
     print_text("Selection!")
 
     shuffle1 = random.sample(population, len(population));
-    grp1 = shuffle1[:len(shuffle1)//2];
+    grp1 = shuffle1[:k];
+    print(grp1)
     parent1 = best_route(grp1);
-    grp2 = shuffle1[len(shuffle1)//2:];
+
+    shuffle1 = random.sample(population, len(population));
+    grp2 = shuffle1[:k];
     parent2 = best_route(grp2);
 
     print_text("Chosen parent1: \n", end='');
@@ -198,17 +202,16 @@ def breed(parents):
     # cut_range = parent2[cut1:cut2]
     # child2 = cut_range + [item for item in parent1 if item not in cut_range];
     cut_range = parent1[cut1:cut2];
-    print(cut_range)
     child1 = []
     index = 0;
     i = 0;
     while i < cut1:
-        if(parent2[index] not in cut_range): child1.append(parent2[index]); print(parent2[index]); print(child1); index += 1; i += 1;
+        if(parent2[index] not in cut_range): child1.append(parent2[index]); index += 1; i += 1;
         else: index += 1; continue;
     while i < cut2:
         child1.append(parent1[i]); i += 1;
     while i < len(parent2):
-        if(parent2[index] not in cut_range): child1.append(parent2[index]); print(parent2[index]); print(child2); index += 1; i += 1;
+        if(parent2[index] not in cut_range): child1.append(parent2[index]); index += 1; i += 1;
         else: index += 1; continue;
 
     print("Child1")
@@ -272,7 +275,7 @@ def breed_population(population, routes_dict):
     new_population = []
 
     for i in range(len(population) // 2):
-        (parent1, parent2) = selection(population, routes_dict);
+        (parent1, parent2) = selection(population, routes_dict, len(population) // 4);
         child1, child2 = breed((parent1, parent2));
         new_population.extend([child1, child2]);
 
@@ -331,6 +334,9 @@ def genetic_algorithm():
     Putting it all together ;)
 
     """
+    #For timing how long it takes
+    now = datetime.datetime.now();
+
     global cityList;
     print_text("City List: ")
     print_text(cityList);
@@ -355,6 +361,9 @@ def genetic_algorithm():
 
     print_text("Final distance: ", end="");
     print_text(best_distance(population));
+
+    time_taken = datetime.datetime.now() - now;
+    print_text("\nFinal time:\t" + str(time_taken))
 
 
 cityList = generate_random_cities(cityList, CITIES_NUM, MAX_X, MAX_Y);
